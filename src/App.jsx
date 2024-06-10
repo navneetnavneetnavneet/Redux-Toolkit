@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { increase } from "./store/reducers/counterSlice";
 import { asyncDecrease } from "./store/actions/CounterActions";
+import {
+  asyncload,
+  asyncstudentsignin,
+  asyncstudentsignout,
+} from "./store/actions/StudentActions";
 
 const App = () => {
   const { value } = useSelector((state) => state.counterReducer);
@@ -14,6 +19,23 @@ const App = () => {
   const AsyncDecreaseByOne = () => {
     dispatch(asyncDecrease(value - 1));
   };
+
+  const studentLoginHandler = async () => {
+    dispatch(
+      asyncstudentsignin({
+        email: "saarthaksharma@gmail.com",
+        password: "123456",
+      })
+    );
+  };
+
+  const studentLogoutHandler = () => {
+    dispatch(asyncstudentsignout());
+  };
+
+  useEffect(() => {
+    dispatch(asyncload());
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen text-white bg-zinc-700">
@@ -30,6 +52,20 @@ const App = () => {
           className="px-4 py-2 rounded-md bg-red-400"
         >
           Async Decrease by 1
+        </button>
+
+        <button
+          onClick={studentLoginHandler}
+          className="px-4 py-2 rounded-md bg-green-400"
+        >
+          Login
+        </button>
+
+        <button
+          onClick={studentLogoutHandler}
+          className="px-4 py-2 rounded-md bg-red-600"
+        >
+          Logout
         </button>
       </div>
     </div>
