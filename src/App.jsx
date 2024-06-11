@@ -7,8 +7,12 @@ import {
   asyncstudentsignin,
   asyncstudentsignout,
 } from "./store/actions/StudentActions";
+import { useNavigate } from "react-router-dom";
 
 const App = () => {
+  const navigate = useNavigate();
+
+  const { isAuthenticated } = useSelector((state) => state.studentReducer);
   const { value } = useSelector((state) => state.counterReducer);
   const dispatch = useDispatch();
 
@@ -35,7 +39,10 @@ const App = () => {
 
   useEffect(() => {
     dispatch(asyncload());
-  }, []);
+
+    isAuthenticated && navigate("/profile");
+    !isAuthenticated && navigate("/login");
+  }, [isAuthenticated]);
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen text-white bg-zinc-700">
